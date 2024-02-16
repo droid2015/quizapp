@@ -37,7 +37,8 @@ class HomeViewModel extends BaseViewModel {
       CollectionReference categoryCollection = FirebaseFirestore.instance.collection('categories');
       categoryCollection.add({            
             'name': question.category.name,
-      });
+      }).then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
 
       // Thêm mức độ khó vào Firestore
       final DocumentReference difficultyDocRef =
@@ -49,7 +50,7 @@ class HomeViewModel extends BaseViewModel {
       final DocumentReference questionDocRef =
           await FirebaseFirestore.instance.collection('questions').add({
         'text': question.text,
-        'categoryId': 'aaa',
+        'categoryId': question.category.id,
         'difficultyId': difficultyDocRef,
       });
 
@@ -78,15 +79,15 @@ class HomeViewModel extends BaseViewModel {
     DifficultyLevel difficulty = DifficultyLevel(id: '1', name: 'Easy');
 
     Question question = Question(
-      id: '1',
-      text: 'What is the capital of France?',
+      id: '2',
+      text: 'What is the capital of VietNam?',
       category: category,
       difficulty: difficulty,
       answers: [
-        Answer(id: '1', questionId: '1', text: 'Paris', isCorrect: true),
-        Answer(id: '2', questionId: '1', text: 'Berlin', isCorrect: false),
-        Answer(id: '3', questionId: '1', text: 'London', isCorrect: false),
-        Answer(id: '4', questionId: '1', text: 'Madrid', isCorrect: false),
+        Answer(id: '1', questionId: '2', text: 'Paris', isCorrect: false),
+        Answer(id: '2', questionId: '2', text: 'Hanoi', isCorrect: true),
+        Answer(id: '3', questionId: '2', text: 'London', isCorrect: false),
+        Answer(id: '4', questionId: '2', text: 'Madrid', isCorrect: false),
       ],
     );
     // Thêm dữ liệu mẫu vào Firestore
